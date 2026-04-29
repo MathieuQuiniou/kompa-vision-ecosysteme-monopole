@@ -1,1 +1,688 @@
 
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>L'écosystème Le Kompa</title>
+<meta name="description" content="Vision commerciale du groupe Le Kompa. Trois hubs, des produits pédagogiques, des services aux écoles et aux familles, et les synergies avec Eddmon.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-page: #262624;
+    --bg-card: #2e2e2b;
+    --bg-sub: #34332f;
+    --text-primary: #f5f4ed;
+    --text-secondary: #c2c0b6;
+    --text-tertiary: #8c8a82;
+    --border-tertiary: rgba(255, 255, 255, 0.07);
+    --border-secondary: rgba(255, 255, 255, 0.16);
+    --radius-md: 8px;
+    --radius-lg: 12px;
+    --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; padding: 0; }
+  body {
+    background: var(--bg-page);
+    color: var(--text-primary);
+    font-family: var(--font-sans);
+    min-height: 100vh;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.5;
+  }
+
+  .page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 64px 48px 80px;
+  }
+
+  .page-head { margin-bottom: 40px; }
+  .page-kicker {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--text-tertiary);
+    margin-bottom: 12px;
+    font-weight: 500;
+  }
+  .page-title {
+    font-size: 36px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin: 0 0 12px;
+    line-height: 1.15;
+  }
+  .page-sub {
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 640px;
+    margin: 0;
+  }
+
+  .eco { margin-top: 8px; }
+  .eco-title-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+  .eco-title { font-size: 20px; font-weight: 500; color: var(--text-primary); }
+  .eco-instruction { font-size: 13px; color: var(--text-secondary); line-height: 1.5; }
+  .eco-reset {
+    font-size: 12px;
+    color: var(--text-tertiary);
+    cursor: pointer;
+    padding: 6px 14px;
+    border-radius: 999px;
+    background: transparent;
+    border: 1px solid var(--border-tertiary);
+    font-family: inherit;
+    visibility: hidden;
+    transition: all 0.15s;
+    flex-shrink: 0;
+  }
+  .eco-reset.show { visibility: visible; }
+  .eco-reset:hover { color: var(--text-primary); background: var(--bg-card); border-color: var(--border-secondary); }
+
+  .eco-block { margin-bottom: 20px; }
+  .eco-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-tertiary);
+    margin-bottom: 10px;
+    font-weight: 500;
+  }
+  .eco-pills { display: flex; flex-wrap: wrap; gap: 8px; }
+  .eco-pill {
+    display: inline-flex;
+    align-items: center;
+    padding: 8px 14px;
+    border-radius: 999px;
+    font-size: 13px;
+    background: var(--bg-card);
+    color: var(--text-secondary);
+    border: 1px solid var(--border-tertiary);
+    cursor: pointer;
+    transition: all 0.15s;
+    user-select: none;
+  }
+  .eco-pill:hover { border-color: var(--border-secondary); color: var(--text-primary); }
+  .eco-pill.dim { opacity: 0.2; }
+  .eco-pill.hot {
+    background: var(--hot-bg);
+    color: var(--hot-text);
+    border-color: var(--hot-border);
+    font-weight: 500;
+  }
+
+  .eco-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 12px;
+    margin-top: 4px;
+  }
+  .eco-card {
+    border-radius: var(--radius-lg);
+    padding: 16px 14px;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: var(--c-bg);
+    color: var(--c-text);
+    border: 1.5px solid transparent;
+    min-height: 124px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    position: relative;
+  }
+  .eco-card:hover {
+    transform: translateY(-3px);
+    border-color: var(--c-border);
+  }
+  .eco-card.on {
+    border-color: var(--c-border);
+    transform: translateY(-3px);
+  }
+  .eco-card.dim { opacity: 0.18; transform: none; }
+  .eco-card-name { font-size: 14px; font-weight: 500; line-height: 1.25; }
+  .eco-card-tag { font-size: 12px; line-height: 1.35; opacity: 0.82; margin-top: 3px; }
+  .eco-card-price { font-size: 12px; font-weight: 500; margin-top: 10px; }
+  .eco-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c-border); margin-bottom: 10px; }
+  .eco-card-badge {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 9px;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    padding: 3px 7px;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--c-text);
+    opacity: 0.85;
+  }
+
+  .eco-info {
+    grid-column: 1 / -1;
+    margin: 4px 0;
+    padding: 0 16px;
+    border-radius: var(--radius-lg);
+    background: var(--bg-card);
+    font-size: 14px;
+    color: var(--text-secondary);
+    line-height: 1.6;
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.25s, padding 0.25s, margin 0.25s;
+    border-left: 3px solid transparent;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border-secondary) transparent;
+  }
+  .eco-info.show {
+    max-height: 160px;
+    padding: 16px 18px;
+    margin: 8px 0 8px;
+    border-left-color: var(--info-color, var(--border-secondary));
+    overflow-y: auto;
+  }
+  .eco-info::-webkit-scrollbar { width: 6px; }
+  .eco-info::-webkit-scrollbar-track { background: transparent; }
+  .eco-info::-webkit-scrollbar-thumb { background: var(--border-secondary); border-radius: 3px; }
+  .eco-info::-webkit-scrollbar-thumb:hover { background: var(--text-tertiary); }
+
+  .eco-info-name { font-weight: 500; color: var(--text-primary); }
+  .eco-info-sep { margin: 0 10px; color: var(--text-tertiary); }
+  .eco-info-refs { font-size: 13px; color: var(--text-tertiary); }
+  .eco-info-refs a {
+    color: var(--text-secondary);
+    text-decoration: underline;
+    text-decoration-color: var(--border-secondary);
+    text-underline-offset: 2px;
+    transition: color 0.15s;
+  }
+  .eco-info-refs a:hover { color: var(--text-primary); text-decoration-color: var(--info-color, var(--text-tertiary)); }
+  .eco-info-body { display: block; margin-top: 10px; }
+
+  /* Palettes (dark Claude) */
+  [data-c="purple"]   { --c-bg: #26215C; --c-text: #CECBF6; --c-border: #7F77DD; }
+  [data-c="teal"]     { --c-bg: #04342C; --c-text: #9FE1CB; --c-border: #1D9E75; }
+  [data-c="coral"]    { --c-bg: #4A1B0C; --c-text: #F5C4B3; --c-border: #D85A30; }
+  [data-c="pink"]     { --c-bg: #4B1528; --c-text: #F4C0D1; --c-border: #D4537E; }
+  [data-c="gray"]     { --c-bg: #3a3a37; --c-text: #D3D1C7; --c-border: #888780; }
+  [data-c="blue"]     { --c-bg: #042C53; --c-text: #B5D4F4; --c-border: #378ADD; }
+  [data-c="green"]    { --c-bg: #173404; --c-text: #C0DD97; --c-border: #639922; }
+  [data-c="amber"]    { --c-bg: #412402; --c-text: #FAC775; --c-border: #BA7517; }
+  [data-c="indigo"]   { --c-bg: #1B1F4D; --c-text: #B5BEEB; --c-border: #5C6BCF; }
+  [data-c="rose"]     { --c-bg: #4F1424; --c-text: #F2B5C5; --c-border: #C04567; }
+  [data-c="lime"]     { --c-bg: #2A3D08; --c-text: #D2E098; --c-border: #88A638; }
+  [data-c="cyan"]     { --c-bg: #033540; --c-text: #9DD6E2; --c-border: #2392B0; }
+  [data-c="orange"]   { --c-bg: #4D2400; --c-text: #FAB97A; --c-border: #D98030; }
+
+  /* Responsive */
+  @media (max-width: 900px) {
+    .page { padding: 48px 32px 64px; }
+    .eco-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 640px) {
+    .page { padding: 32px 20px 48px; }
+    .page-title { font-size: 26px; }
+    .page-sub { font-size: 14px; }
+    .eco-title { font-size: 18px; }
+    .eco-title-row { flex-direction: column; align-items: flex-start; }
+    .eco-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+    .eco-card { padding: 14px 12px; min-height: 116px; }
+    .eco-card-name { font-size: 13px; }
+    .eco-pill { font-size: 12px; padding: 7px 12px; }
+  }
+  @media (max-width: 380px) {
+    .eco-grid { grid-template-columns: 1fr; }
+  }
+
+  .page-foot {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border-tertiary);
+    font-size: 12px;
+    color: var(--text-tertiary);
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <div class="page-head">
+    <div class="page-kicker">Groupe Trousseau, vision Le Kompa</div>
+    <h1 class="page-title">L'écosystème Le Kompa</h1>
+    <p class="page-sub">Passer d'un acteur d'ateliers parascolaires à un écosystème complet de l'enfant, de l'école et de la famille. Trois hubs technologiques, des produits pédagogiques propriétaires, des services aux écoles et aux familles, et les synergies avec Eddmon.</p>
+  </div>
+
+  <div class="eco">
+    <div class="eco-title-row">
+      <div class="eco-instruction">Clique sur une offre, un hub, une ressource, un segment ou une synergie pour voir les connexions.</div>
+      <button class="eco-reset" id="eco-reset" type="button">Tout afficher</button>
+    </div>
+
+    <div class="eco-block">
+      <div class="eco-label">Ressources</div>
+      <div class="eco-pills">
+        <div class="eco-pill" data-kind="res" data-id="intervenants">Réseau intervenants certifiés</div>
+        <div class="eco-pill" data-kind="res" data-id="ecoles-cathos">Écoles privées catholiques IDF</div>
+        <div class="eco-pill" data-kind="res" data-id="contenus">Base de contenus pédagogiques</div>
+      </div>
+    </div>
+
+    <div class="eco-block">
+      <div class="eco-label">Hubs et outils transverses</div>
+      <div class="eco-pills">
+        <div class="eco-pill" data-kind="tool" data-id="hub-dir">Hub Directeurs, B2B</div>
+        <div class="eco-pill" data-kind="tool" data-id="hub-fam">Hub Familles, B2C</div>
+        <div class="eco-pill" data-kind="tool" data-id="hub-int">Hub Intervenants, RH</div>
+        <div class="eco-pill" data-kind="tool" data-id="ecole-directe">EcoleDirecte Kompa</div>
+      </div>
+    </div>
+
+    <div class="eco-block">
+      <div class="eco-label">Synergies Eddmon</div>
+      <div class="eco-pills">
+        <div class="eco-pill" data-kind="syn" data-id="snack-syn">Goûters mutualisés</div>
+        <div class="eco-pill" data-kind="syn" data-id="kit-syn">Fournitures mutualisées</div>
+        <div class="eco-pill" data-kind="syn" data-id="stages-syn">Stages de 3e</div>
+        <div class="eco-pill" data-kind="syn" data-id="pair-syn">Au pair familles écoles</div>
+      </div>
+    </div>
+
+    <div class="eco-block">
+      <div class="eco-label">Verticales commerciales</div>
+      <div class="eco-grid" id="eco-grid"></div>
+    </div>
+
+    <div class="eco-block" style="margin-top: 20px;">
+      <div class="eco-label">Segments de marché</div>
+      <div class="eco-pills">
+        <div class="eco-pill" data-kind="pers" data-id="dir-cathos">Directeurs écoles cathos</div>
+        <div class="eco-pill" data-kind="pers" data-id="dir-publics">Directeurs écoles publiques</div>
+        <div class="eco-pill" data-kind="pers" data-id="dir-rural">Écoles rurales</div>
+        <div class="eco-pill" data-kind="pers" data-id="familles-kompa">Familles écoles Kompa</div>
+        <div class="eco-pill" data-kind="pers" data-id="familles-paris">Familles parisiennes B2C</div>
+        <div class="eco-pill" data-kind="pers" data-id="ados-3e">Ados de 3e et orientation</div>
+        <div class="eco-pill" data-kind="pers" data-id="evenement">Wedding planners et événementiel</div>
+        <div class="eco-pill" data-kind="pers" data-id="centres-loisirs">Centres de loisirs</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="page-foot">Document de travail interne · Groupe Trousseau · Vision Le Kompa</div>
+</div>
+
+<script>
+(function() {
+  var verts = {
+    'ateliers': {
+      name: 'Kompa Ateliers', tag: 'Ateliers parascolaires', color: 'gray',
+      tools: ['hub-dir','hub-int'], res: ['intervenants','ecoles-cathos'], pers: ['dir-cathos'], syn: [], price: 'Forfait école',
+      refs: [],
+      role: "Le cœur historique de Le Kompa : des ateliers parascolaires animés par des intervenants certifiés directement dans les écoles privées catholiques d'Île-de-France. Coding, échecs, éloquence, robotique, théâtre, sciences. Les directeurs réservent leurs ateliers depuis le Hub Directeurs en quelques clics, sans passer par un conseiller.<br><br>L'argument commercial est simple : l'école n'a rien à gérer. Le Kompa apporte l'intervenant, le matériel, le programme pédagogique, les assurances. Le directeur valide, l'intervenant débarque, les enfants progressent. Les ateliers nourrissent toute la suite de l'écosystème : l'enfant qui fait des échecs en atelier joue ensuite sur Kompa Chess, l'enfant qui fait du coding rejoint Kompa Vidéos, et les familles qui découvrent Le Kompa via les ateliers achètent ensuite stages de vacances, colos, goûters, fournitures.<br><br>C'est la verticale d'acquisition principale du groupe côté B2B et le ticket d'entrée naturel vers tout le reste."
+    },
+    'stages-vac': {
+      name: 'Kompa Stages', tag: 'Stages de vacances', color: 'coral',
+      tools: ['hub-dir','hub-fam','hub-int'], res: ['intervenants','ecoles-cathos'], pers: ['dir-cathos','familles-kompa'], syn: [], price: '250-350€/semaine',
+      refs: [],
+      role: "Stages d'une semaine pendant les vacances scolaires, organisés dans les locaux des écoles partenaires. L'école prête ses salles le temps des congés, Le Kompa orchestre tout : programme, intervenants, inscriptions, assurances, repas et goûters.<br><br>Tarif différencié intelligent : prix préférentiel pour les élèves de l'école (le directeur offre un avantage concret à ses familles), prix plein pour les extérieurs. L'école génère de la valeur pour ses familles sans effort et sans coût, et Le Kompa élargit son audience aux familles voisines.<br><br>Réservation 100% en ligne via le Hub Familles, zéro friction pour les parents. Disciplines prioritaires : coding camp, chess camp, sciences camp, théâtre camp. Pricing entre 250 et 350€ la semaine selon la thématique et le format. Lancement urgent dès les prochaines vacances pour valider le modèle avec 2-3 écoles pilotes."
+    },
+    'colos': {
+      name: 'Kompa Colos', tag: 'Colos & week-ends encadrés', color: 'green',
+      tools: ['hub-fam','hub-int'], res: ['intervenants'], pers: ['familles-kompa','familles-paris'], syn: [], price: '600-900€/semaine',
+      refs: [],
+      role: "Colonies de vacances et formats week-end encadrés par les intervenants Kompa. Multi-activités, logique éducative forte, encadrement professionnel BAFA. La différence avec une colo classique : les intervenants Kompa sont les mêmes que ceux que l'enfant connaît déjà à l'école, ce qui crée une confiance immédiate des parents.<br><br>Thématiques fortes pour se démarquer du marché ultra-saturé des colos génériques : coding camp, chess camp, cinéma camp, sciences camp, éloquence camp. L'enfant ne part pas pour faire de la voile et de l'accrobranche, il part pour progresser sur une compétence qui lui plaît.<br><br>Réservation via le Hub Familles, les parents qui utilisent déjà la plateforme n'ont aucune friction. Pricing milieu de gamme à 600-900€ la semaine selon thématique et durée. Partenariat possible avec UCPA ou UFCV pour les infrastructures d'hébergement."
+    },
+    'gymnase': {
+      name: 'Kompa Sport', tag: 'Cours de sport en gymnase', color: 'amber',
+      tools: ['hub-dir','hub-int'], res: ['intervenants','ecoles-cathos'], pers: ['dir-cathos'], syn: [], price: 'Forfait école',
+      refs: [],
+      role: "Les écoles ont des gymnases souvent sous-utilisés en périscolaire. Le Kompa s'y installe et organise des cours de sport sur-mesure : escrime, judo, basket, badminton, danse, gym. Le directeur choisit les disciplines qui manquent à son école.<br><br>L'argument commercial se prolonge : l'école n'a rien à gérer. Le Kompa apporte l'intervenant qualifié, le matériel et le programme. Réservation via le Hub Directeurs en intégration native avec les autres ateliers.<br><br>Modèle de facturation flexible : à l'école directement (forfait inclus dans son offre familles), à la famille (sport périscolaire payant), ou en split. Le sport périscolaire représente un marché énorme et largement sous-exploité dans les écoles privées catholiques où l'éducation physique reste pauvre."
+    },
+    'centres-l': {
+      name: 'Kompa Mercredi', tag: 'Partenariats centres de loisirs', color: 'pink',
+      tools: ['hub-int'], res: ['intervenants'], pers: ['centres-loisirs','dir-publics'], syn: [], price: 'Prestation',
+      refs: [],
+      role: "Les ateliers Kompa proposés dans les centres de loisirs le mercredi après-midi. Même logique d'intervention que dans les écoles, mais nouveau canal de distribution avec un coût d'acquisition très faible : un seul partenariat avec un opérateur de centres de loisirs équivaut à plusieurs dizaines de structures touchées d'un coup.<br><br>Modèle en deux options : prestation de service (Le Kompa facture le centre à la séance) ou co-organisation (Le Kompa co-anime avec l'équipe du centre, partage des inscriptions). Phase pilote sur 5-10 centres en Île-de-France pour valider le modèle avant scaling national.<br><br>L'avantage stratégique : ces centres accueillent souvent des enfants des écoles publiques que Le Kompa n'a pas encore conquises, ce qui permet de tester un autre marché que celui des écoles privées catholiques."
+    },
+    'snack': {
+      name: 'Kompa Snack', tag: 'Goûters à la sortie', color: 'orange',
+      tools: ['hub-dir','hub-fam','hub-int'], res: ['intervenants','ecoles-cathos'], pers: ['familles-kompa','dir-cathos'], syn: ['snack-syn'], price: '40€/mois',
+      refs: [],
+      role: "Un intervenant Kompa distribue des goûters aux enfants à la sortie de l'école. Les parents s'abonnent en mensuel, l'enfant a toujours son goûter, même les jours où les parents oublient de le préparer.<br><br>Modèle économique malin : l'intervenant est déjà sur place pour ses ateliers, donc le coût marginal est quasi-nul. Le revenu additionnel est direct, prévisible, récurrent. L'abonnement mensuel garantit la trésorerie.<br><br>Synergie majeure avec Eddmon : sourcing et gestion du stock mutualisés au niveau du groupe Trousseau. Eddmon livre à domicile aux familles, Le Kompa distribue à la sortie d'école. Volume groupé = prix de gros = marge solide.<br><br>Pricing autour de 40€/mois pour la formule complète (5 goûters/semaine). Phase pilote sur 1-2 écoles pour valider l'opérationnel avant scaling, en particulier sur l'hygiène alimentaire et les obligations sanitaires."
+    },
+    'kit': {
+      name: 'Kompa Kit', tag: 'Fournitures rentrée', color: 'lime',
+      tools: ['hub-dir','hub-fam'], res: ['ecoles-cathos'], pers: ['familles-kompa','dir-cathos'], syn: ['kit-syn'], price: '100-150€/enfant',
+      refs: [],
+      role: "Zéro galère rentrée pour les parents. L'école transmet la liste à Le Kompa, le parent commande sur le Hub Familles, et tout arrive directement à l'école avant la rentrée. L'enfant arrive le jour J, son sac l'attend en classe, prêt à l'emploi.<br><br>Synergie forte avec Eddmon : back-office mutualisé au niveau du groupe Trousseau. Mêmes stylos, mêmes cahiers, mêmes agendas, juste un branding différent selon la marque. Volume groupé = prix de gros que les enseignes papeterie type Bureau Vallée ou Cultura ne peuvent pas matcher.<br><br>Option co-branding : cahiers et agendas aux couleurs de l'école, avec son logo. Levier de fierté pour les familles, levier de visibilité pour l'établissement.<br><br>Pricing 100-150€ par enfant selon la liste, prix coûtant + 15-20% de marge service. Paiement one-shot annuel à la rentrée. Le service qui transforme la corvée d'août en simple validation en ligne."
+    },
+    'videos': {
+      name: 'Kompa Vidéos', tag: 'Plateforme de formation vidéo', color: 'purple',
+      tools: ['hub-fam','hub-int'], res: ['intervenants','contenus'], pers: ['familles-paris','dir-rural'], syn: [], price: '15€/mois ou pack école',
+      refs: [],
+      role: "Bibliothèque de contenus vidéo produits par les meilleurs intervenants Kompa. Coding, échecs, éloquence, robotique, sciences. Pas du contenu générique acheté en ligne ou pompé sur YouTube : du contenu authentique, cohérent avec ce que l'enfant vit en atelier, signé par les intervenants qu'il connaît déjà.<br><br>Double accès qui démultiplie le marché : abonnement grand public B2C pour les familles parisiennes, et pack tablettes pré-chargées pour le déploiement rural B2B (les écoles rurales reçoivent des tablettes avec les contenus dessus, plus le guide enseignant).<br><br>L'IA notifie l'équipe Kompa quand un sujet est demandé mais manque dans la bibliothèque, ce qui déclenche un processus itératif d'enrichissement continu. On produit ce que les utilisateurs veulent, on ne devine pas leurs besoins.<br><br>Pricing 15€/mois en abonnement famille, ou pack annuel école rurale (tablettes + abonnement + guide pédagogique) à définir selon le volume. Synergie technologique forte avec Eddmon Coach qui exploite la même logique de bibliothèque vidéo."
+    },
+    'rural': {
+      name: 'Kompa Rural', tag: 'Déploiement écoles rurales', color: 'lime',
+      tools: ['hub-dir','hub-fam'], res: ['contenus'], pers: ['dir-rural'], syn: [], price: 'Pack annuel école',
+      refs: [],
+      role: "Apporter Le Kompa aux enfants qui n'ont pas accès aux ateliers parascolaires dans leur commune. Le pack rural est simple : Le Kompa envoie des tablettes pré-chargées avec la bibliothèque Kompa Vidéos, plus un guide pédagogique clé en main pour l'enseignant. Pas besoin de déplacer un intervenant, l'enseignant anime localement avec l'aide des contenus.<br><br>Argument RSE fort, particulièrement pour les collectivités locales : Le Kompa démocratise l'accès à des ateliers de qualité dans les zones où les acteurs privés ne se déplacent pas. Modèle scalable sans coût RH supplémentaire : une tablette déployée = revenus récurrents sans intervenant physique.<br><br>Financement à structurer : aides publiques régionales et départementales possibles, partenariats Région, ANCT (Agence Nationale de la Cohésion des Territoires). Phase pilote sur 10-20 écoles rurales avec les contenus coding et échecs, puis extension."
+    },
+    'public': {
+      name: 'Kompa Public', tag: 'Mairies et collectivités', color: 'blue',
+      tools: ['hub-dir','hub-int'], res: ['intervenants'], pers: ['dir-publics'], syn: [], price: 'Appels d\'offres',
+      refs: [],
+      role: "Développement du Kompa dans le secteur public via des partenariats avec les collectivités locales. Appels d'offres municipaux, conventions de partenariat avec mairies, programmes périscolaires financés par les communes.<br><br>Le marché public du périscolaire est immense et largement servi par des associations historiques peu agiles technologiquement. Le Kompa arrive avec une plateforme de réservation moderne, des intervenants certifiés et des contenus pédagogiques structurés. L'argument est simple : la même qualité que dans les écoles privées catholiques, accessible aux écoles publiques.<br><br>Question structurelle à trancher : faut-il une structure juridique séparée (SAS dédiée, association loi 1901) pour répondre aux appels d'offres publics ? Cibles prioritaires après Paris : Hauts-de-Seine, Yvelines, Val-de-Marne, puis grandes villes de province (Lyon, Bordeaux, Marseille, Lille)."
+    },
+    'sup': {
+      name: 'Kompa Sup', tag: 'Collèges, lycées, supérieur', color: 'indigo',
+      tools: ['hub-dir','hub-int'], res: ['intervenants'], pers: ['dir-cathos','ados-3e'], syn: [], price: 'Forfait école',
+      refs: [],
+      role: "Extension logique du réseau Kompa vers les niveaux supérieurs. Les écoles primaires partenaires ont aussi des collèges et lycées dans le même groupe scolaire. Pourquoi s'arrêter à la classe de CM2 ?<br><br>Ateliers adaptés aux ados : éloquence avancée pour préparer les oraux du bac, coding avancé (Python, web, IA), orientation Parcoursup en lien avec Eddmon North, débats philo, théâtre engagé, journalisme. Intervenants spécialisés sur ces niveaux, souvent étudiants Eddmon des grandes écoles qui apportent leur expertise et leur récit personnel.<br><br>Synergie forte avec Eddmon Supérieur sur l'orientation : Le Kompa anime les ateliers d'orientation dans les lycées partenaires, et Eddmon prend le relais pour le coaching personnalisé Parcoursup côté famille. Une porte d'entrée qui s'ouvre vers tout l'écosystème Eddmon.<br><br>Le supérieur (BUT, BTS, prépa) reste à explorer via les BDE et associations étudiantes comme porte d'entrée."
+    },
+    'ecole-d': {
+      name: 'Kompa Direct', tag: 'Logiciel de gestion école', color: 'cyan',
+      tools: ['hub-dir','ecole-directe'], res: ['ecoles-cathos'], pers: ['dir-cathos','dir-publics'], syn: [], price: 'Abonnement par élève',
+      refs: [],
+      role: "Reproduire le système EcoleDirecte (emploi du temps, devoirs, notation, absences, communication parents) et le proposer aux écoles partenaires comme solution propriétaire Kompa. EcoleDirecte est le standard du marché privé catholique mais l'expérience utilisateur reste datée et les écoles paient cher pour un produit qu'elles ne contrôlent pas.<br><br>L'avantage différenciant : intégration native avec le Hub Directeurs Kompa. Tout dans un seul outil, pas de double saisie entre la gestion des ateliers et la gestion scolaire. Communication école/famille directement depuis la plateforme. Les données restent chez Le Kompa, ce qui devient un levier de fidélisation extrêmement fort (une école qui a basculé tout son SI scolaire sur Kompa Direct ne change plus de prestataire).<br><br>Modèle économique : abonnement par élève, fréquence mensuelle ou annuelle au choix de l'école. Build from scratch ou white-label d'une solution existante (Pronote, Toutemonannée), à arbitrer selon le rapport coût/délai. Verticale qui s'inscrit dans le long terme et qui déverrouille toute la stratégie de pénétration des écoles."
+    },
+    'chess': {
+      name: 'Kompa Chess', tag: 'App échecs gaming + merch', color: 'rose',
+      tools: ['hub-fam'], res: ['contenus','intervenants'], pers: ['familles-kompa','familles-paris'], syn: [], price: '8€/mois + merch',
+      refs: [],
+      role: "Une app gaming autour des échecs où les enfants jouent avec leurs copains de classe, partagent leurs parties, progressent. Style Supercell : rétention forte, communauté serrée, classements stimulants, défis quotidiens. Pas une plateforme anonyme type Chess.com, un réseau social scolaire dédié aux échecs.<br><br>Lien direct avec les ateliers Kompa : progresser en cours débloque des niveaux dans l'app, les tournois inter-écoles deviennent des événements de fin d'année, les meilleurs joueurs représentent leur école. L'enfant joue parce qu'il joue avec ses amis, mais en jouant il progresse en stratégie, en concentration, en maîtrise de soi.<br><br>Volet merch en parallèle : échiquiers personnalisés aux couleurs de l'école, pièces gravées avec le blason, coffrets cadeaux pour les anniversaires. Levier de fierté pour les enfants, de revenu additionnel pour Le Kompa, de visibilité pour les écoles.<br><br>Pricing 8€/mois pour l'app premium (version gratuite limitée), 50-150€ pour les coffrets merch selon les options. Build : surcouche sur Chess.com API pour le moteur de jeu, layer social et gamification développé en interne. Tournois inter-écoles trimestriels pour rythmer l'année."
+    },
+    'cahiers': {
+      name: 'Kompa Cahiers', tag: 'Cahiers de vacances', color: 'teal',
+      tools: ['hub-fam'], res: ['contenus'], pers: ['familles-kompa','familles-paris'], syn: [], price: '12€ papier ou inclus',
+      refs: [],
+      role: "Cahiers de vacances avec contenu généré par IA et validé pédagogiquement par les intervenants Kompa. Pas un cahier générique de plus dans le rayon Carrefour : du contenu calibré sur les programmes Kompa, en cohérence totale avec ce que l'enfant a appris en atelier pendant l'année.<br><br>Double format pour démultiplier le marché : version papier vendue aux familles (impulse buy en sortie d'école juste avant les vacances), version interactive accessible via le Hub Familles (incluse dans certains forfaits, ou en complément payant).<br><br>Co-branding possible avec l'école : cahiers aux couleurs de l'établissement, mot du directeur en préface, logo en couverture. L'école devient prescriptrice du cahier, ce qui démultiplie les ventes naturellement.<br><br>Pricing 12€ pour la version papier (sous le seuil psychologique des 15€ pour rester impulse buy), inclusion possible dans les abonnements familles pour la version interactive. Distribution : réseau Kompa en priorité, puis librairies dans un second temps."
+    },
+    'weekend': {
+      name: 'Kompa Family', tag: 'Week-ends famille', color: 'pink',
+      tools: ['hub-fam','hub-int'], res: ['intervenants'], pers: ['familles-kompa','familles-paris'], syn: [], price: '60-150€ par famille',
+      refs: [],
+      role: "Activités en famille pendant les week-ends, où enfants et parents font ensemble. Atelier robotique père-fils, cuisine mère-fille, poterie en famille, escape game scientifique, sport collectif. Format inspiré de Wecandoo mais avec un positionnement clairement éducatif et pédagogique, pas juste du loisir.<br><br>L'argument commercial différenciant : les activités sont animées par les intervenants Kompa, garantie de qualité pédagogique. Les familles qui connaissent déjà Le Kompa via les ateliers de leurs enfants n'ont pas à chercher ailleurs. Format flexible : week-end complet ou demi-journée selon les contraintes des familles modernes débordées.<br><br>Pricing 60-150€ par famille selon la durée et la thématique. Réservation via le Hub Familles, qui agrège déjà les autres services. La verticale élargit la relation Kompa au-delà de l'enfant seul, vers la famille entière, ce qui renforce la rétention long terme."
+    },
+    'stage': {
+      name: 'Kompa Stage', tag: 'Stages de 3e', color: 'blue',
+      tools: ['hub-dir','hub-fam'], res: ['intervenants','ecoles-cathos'], pers: ['dir-cathos','ados-3e'], syn: ['stages-syn'], price: 'Forfait école ou famille',
+      refs: [],
+      role: "Le placement de stages de 3e qui transforme une corvée parentale en service école. L'école ouvre la porte, la famille bénéficie. Le Kompa mobilise son propre réseau et celui d'Eddmon pour placer les élèves dans des stages qui correspondent à leur projet d'orientation, pas dans le premier stage trouvé chez le cousin du voisin.<br><br>Côté école B2B : le directeur propose le service comme avantage de fidélisation aux familles. Le Kompa gère tout l'administratif et le matching, l'école n'a rien à faire. C'est un argument de vente très fort pour les directeurs qui cherchent à différencier leur offre des écoles voisines.<br><br>Côté famille B2C : les parents n'ont plus à éplucher leur réseau personnel. L'enfant accède à des entreprises qui correspondent à ses envies, pas à celles disponibles par dépit.<br><br>Synergie majeure avec Eddmon : Eddmon mobilise son réseau de tuteurs alumni grandes écoles (banques, cabinets de conseil, startups, médias), Le Kompa mobilise son réseau d'écoles partenaires et de familles. Une seule offre commune, deux marques qui en bénéficient. Modèle de facturation à arbitrer : forfait à l'école (incluse dans son offre familles), forfait famille direct, ou mix des deux."
+    },
+    'conseil': {
+      name: 'Kompa Conseil', tag: 'Conseil aux directeurs', color: 'gray',
+      tools: ['hub-dir'], res: ['ecoles-cathos'], pers: ['dir-cathos'], syn: [], price: 'Forfait mission ou abonnement',
+      refs: [],
+      role: "Accompagner les directeurs dans le développement de leur école : nouvelles activités à proposer, gestion d'équipe, stratégie de communication, pédagogie innovante, transformation numérique. Le Kompa connaît déjà l'école de l'intérieur via les ateliers, ce n'est pas un cabinet externe généraliste qui débarque avec ses slides Big Four, c'est un partenaire qui comprend le contexte concret.<br><br>Approche concrète et opérationnelle, pas du PowerPoint. On vient avec des actions, des prestataires, des intervenants, des outils. Le directeur ne ressort pas avec un rapport de 80 pages, il ressort avec un plan d'action et les bonnes personnes pour l'exécuter.<br><br>Modèle flexible : forfait mission ponctuelle (refonte du projet pédagogique, gestion d'une crise, restructuration d'équipe) ou abonnement mensuel pour un accompagnement continu. Profil du consultant : interne pour la qualité et la cohérence, complété par un réseau de freelances spécialisés (RH, communication, juridique, finance d'école) selon les besoins."
+    },
+    'web': {
+      name: 'Kompa Web', tag: 'Site web et outils digitaux', color: 'cyan',
+      tools: ['hub-dir'], res: ['ecoles-cathos'], pers: ['dir-cathos','dir-publics'], syn: [], price: '3000-8000€ + maintenance',
+      refs: [],
+      role: "Refaire les sites web des écoles, améliorer leur communication digitale, digitaliser leurs outils internes (formulaires d'inscription, communication parents, espace partenaires). La connaissance fine du secteur éducatif privé catholique fait la différence : Le Kompa sait quoi mettre en avant, à quelles familles on s'adresse, quel ton adopter, quelles valeurs véhiculer.<br><br>Forfait clé en main : devis, production, livraison, hébergement, maintenance. Un seul interlocuteur pour le directeur, qui n'a pas le temps de jongler entre dix prestataires différents. Outils techniques au choix selon le profil de l'école : Webflow pour les écoles modernes qui veulent du design, WordPress pour celles qui veulent autonomie sur le contenu, solution custom pour les groupes scolaires avec plusieurs établissements.<br><br>Pricing entre 3000 et 8000€ selon la complexité du site (one-shot), plus un abonnement mensuel maintenance et hébergement à 80-150€. Verticale qui sécurise une relation long terme avec l'école et qui ouvre la porte à toutes les autres offres Kompa."
+    },
+    'info': {
+      name: 'Kompa IT', tag: 'Infogérance informatique', color: 'amber',
+      tools: ['hub-dir','hub-int'], res: ['ecoles-cathos','intervenants'], pers: ['dir-cathos','dir-publics'], syn: [], price: 'Abonnement mensuel',
+      refs: [],
+      role: "Maintenance informatique directement dans les écoles. Remplacer les freelances surfacturés et les ESN trop chères par une offre Kompa fiable, transparente et abordable. La plupart des écoles privées catholiques paient leurs prestataires informatiques au coup par coup, avec des factures surprises à chaque incident.<br><br>L'angle malin : l'intervenant Kompa est déjà sur place pour ses ateliers, donc la maintenance informatique se greffe sur la même visite sans coût marginal de déplacement. Quand un PC plante, on intervient lors du prochain atelier, pas dans 3 jours après devis.<br><br>Tarif transparent et abonnement mensuel forfaitaire : fini les factures surprise, le directeur sait combien ça coûte chaque mois. Périmètre à arbitrer : matériel uniquement, ou matériel + logiciels + réseau + sauvegarde. Build interne (recrutement d'un profil tech junior dédié) ou partenariat avec une ESN spécialisée éducation, à trancher selon le rythme de signature des écoles."
+    },
+    'event': {
+      name: 'Kompa Events', tag: 'Mariages, communions, baptêmes', color: 'rose',
+      tools: ['hub-int'], res: ['intervenants'], pers: ['evenement','familles-kompa'], syn: [], price: '300-800€ par événement',
+      refs: [],
+      role: "Animation enfants lors d'événements privés. Les parents organisent un mariage, une communion, un baptême, et veulent profiter de leur fête sans avoir à gérer les enfants. Le Kompa envoie un ou plusieurs intervenants qualifiés qui occupent les petits invités avec des activités sur-mesure pendant que les adultes profitent.<br><br>L'argument différenciant : les intervenants Kompa sont des profils pédagogiques certifiés, pas des animateurs lambda recrutés sur le bon coin. Les parents font confiance immédiatement parce que c'est le réseau qu'ils connaissent déjà via l'école. Activités adaptées à l'âge et au thème de l'événement : escape game pour les ados, atelier maquillage pour les petites filles, chasse au trésor pour les plus jeunes.<br><br>Pricing 300 à 800€ par événement selon la durée, le nombre d'intervenants et la complexité des activités. Cibler aussi les organisateurs en masse : diocèses pour les communions, paroisses, mairies pour les fêtes communales. Synergies à activer : partenariat avec wedding planners qui ont systématiquement besoin d'une solution animation enfants fiable, comme apporteurs d'affaires récurrents avec commission."
+    },
+    'pair': {
+      name: 'Kompa × Pair', tag: 'Au pair familles écoles', color: 'purple',
+      tools: ['hub-fam'], res: ['ecoles-cathos'], pers: ['familles-kompa','dir-cathos'], syn: ['pair-syn'], price: 'Premium',
+      refs: [],
+      role: "Synergie pure avec Eddmon Pair. Les écoles privées catholiques de Le Kompa, en particulier les écoles hors contrat type EIB Monceau ou Jeannine Manuel, regroupent une concentration unique de familles très aisées et internationales. Ces familles sont la cible idéale pour le service au pair d'Eddmon.<br><br>Le Kompa ouvre la porte aux familles de ses écoles partenaires : l'établissement présente le service comme un avantage exclusif réservé à ses élèves. Eddmon orchestre le matching avec les étudiants étrangers issus de Eddmon Lingo, gère la logistique (visa, hébergement), et accompagne la relation dans la durée.<br><br>Modèle de partage des revenus à arbitrer entre les deux marques : commission Le Kompa sur chaque famille placée, ou forfait annuel par école qui débloque le service pour tous ses parents. La verticale n'a pas de délivrabilité opérationnelle propre côté Le Kompa, c'est un canal d'acquisition pour Eddmon Pair via les écoles partenaires Kompa, qui démultiplie l'accès au segment ultra-premium."
+    }
+  };
+
+  var vertOrder = [
+    'ateliers','stages-vac','colos','gymnase','centres-l',
+    'snack','kit','videos','rural','public',
+    'sup','ecole-d','chess','cahiers','weekend',
+    'stage','conseil','web','info','event','pair'
+  ];
+
+  var vertBadge = {
+    'snack': '× Eddmon',
+    'kit': '× Eddmon',
+    'stage': '× Eddmon',
+    'pair': '× Eddmon',
+    'stages-vac': 'Urgent',
+    'ateliers': 'Cœur'
+  };
+
+  var colors = {
+    purple:  ['#26215C','#CECBF6','#7F77DD'],
+    teal:    ['#04342C','#9FE1CB','#1D9E75'],
+    coral:   ['#4A1B0C','#F5C4B3','#D85A30'],
+    pink:    ['#4B1528','#F4C0D1','#D4537E'],
+    gray:    ['#3a3a37','#D3D1C7','#888780'],
+    blue:    ['#042C53','#B5D4F4','#378ADD'],
+    green:   ['#173404','#C0DD97','#639922'],
+    amber:   ['#412402','#FAC775','#BA7517'],
+    indigo:  ['#1B1F4D','#B5BEEB','#5C6BCF'],
+    rose:    ['#4F1424','#F2B5C5','#C04567'],
+    lime:    ['#2A3D08','#D2E098','#88A638'],
+    cyan:    ['#033540','#9DD6E2','#2392B0'],
+    orange:  ['#4D2400','#FAB97A','#D98030']
+  };
+
+  var grid = document.getElementById('eco-grid');
+  var html = '';
+  vertOrder.forEach(function(id) {
+    var v = verts[id];
+    var badge = vertBadge[id] ? '<div class="eco-card-badge">' + vertBadge[id] + '</div>' : '';
+    html += '<div class="eco-card" data-c="' + v.color + '" data-id="' + id + '">' +
+              badge +
+              '<div><div class="eco-dot"></div><div class="eco-card-name">' + v.name + '</div><div class="eco-card-tag">' + v.tag + '</div></div>' +
+              '<div class="eco-card-price">' + v.price + '</div>' +
+            '</div>';
+  });
+  grid.innerHTML = html;
+
+  var info = document.createElement('div');
+  info.className = 'eco-info';
+  info.id = 'eco-info';
+  grid.appendChild(info);
+
+  var resetBtn = document.getElementById('eco-reset');
+  var activeId = null;
+
+  function buildRefsHtml(refs) {
+    if (!refs || !refs.length) return '';
+    var links = refs.map(function(r) {
+      return '<a href="' + r.url + '" target="_blank" rel="noopener">' + r.name + '</a>';
+    }).join(', ');
+    return '<span class="eco-info-sep">·</span><span class="eco-info-refs">Réf : ' + links + '</span>';
+  }
+
+  function getEndOfRow(targetCard) {
+    var cards = Array.prototype.filter.call(grid.children, function(c) { return c.classList.contains('eco-card'); });
+    var targetTop = targetCard.getBoundingClientRect().top;
+    var lastCardInRow = targetCard;
+    for (var i = 0; i < cards.length; i++) {
+      var rect = cards[i].getBoundingClientRect();
+      if (Math.abs(rect.top - targetTop) < 5) {
+        lastCardInRow = cards[i];
+      }
+    }
+    return lastCardInRow;
+  }
+
+  function paint(vertId) {
+    var v = verts[vertId];
+    if (!v) return;
+    var palette = colors[v.color];
+
+    var cards = document.querySelectorAll('.eco-card');
+    var clickedCard = null;
+    for (var i = 0; i < cards.length; i++) {
+      cards[i].classList.remove('on','dim');
+      if (cards[i].dataset.id === vertId) {
+        cards[i].classList.add('on');
+        clickedCard = cards[i];
+      }
+      else cards[i].classList.add('dim');
+    }
+
+    var pills = document.querySelectorAll('.eco-pill');
+    var related = {};
+    (v.tools||[]).forEach(function(id){ related[id]=1; });
+    (v.res||[]).forEach(function(id){ related[id]=1; });
+    (v.pers||[]).forEach(function(id){ related[id]=1; });
+    (v.syn||[]).forEach(function(id){ related[id]=1; });
+
+    for (var j = 0; j < pills.length; j++) {
+      pills[j].classList.remove('hot','dim');
+      pills[j].style.removeProperty('--hot-bg');
+      pills[j].style.removeProperty('--hot-text');
+      pills[j].style.removeProperty('--hot-border');
+      if (related[pills[j].dataset.id]) {
+        pills[j].classList.add('hot');
+        pills[j].style.setProperty('--hot-bg', palette[0]);
+        pills[j].style.setProperty('--hot-text', palette[1]);
+        pills[j].style.setProperty('--hot-border', palette[2]);
+      } else {
+        pills[j].classList.add('dim');
+      }
+    }
+
+    if (clickedCard) {
+      var lastInRow = getEndOfRow(clickedCard);
+      if (lastInRow.nextSibling !== info) {
+        grid.insertBefore(info, lastInRow.nextSibling);
+      }
+    }
+
+    info.style.setProperty('--info-color', palette[2]);
+    info.innerHTML =
+      '<span class="eco-info-name">' + v.name + '</span>' +
+      '<span class="eco-info-sep">·</span>' + v.tag +
+      buildRefsHtml(v.refs) +
+      '<span class="eco-info-body">' + v.role + '</span>';
+    info.classList.add('show');
+    info.scrollTop = 0;
+    resetBtn.classList.add('show');
+    activeId = vertId;
+  }
+
+  function paintFromPill(kind, id) {
+    var matchKey = kind === 'tool' ? 'tools' : (kind === 'res' ? 'res' : (kind === 'syn' ? 'syn' : 'pers'));
+    var matchingVerts = [];
+    for (var vid in verts) {
+      if ((verts[vid][matchKey]||[]).indexOf(id) >= 0) matchingVerts.push(vid);
+    }
+
+    var pills = document.querySelectorAll('.eco-pill');
+    for (var k = 0; k < pills.length; k++) {
+      pills[k].classList.remove('hot','dim');
+      pills[k].style.removeProperty('--hot-bg');
+      pills[k].style.removeProperty('--hot-text');
+      pills[k].style.removeProperty('--hot-border');
+      if (pills[k].dataset.id === id) {
+        pills[k].classList.add('hot');
+      } else {
+        pills[k].classList.add('dim');
+      }
+    }
+
+    var cards = document.querySelectorAll('.eco-card');
+    var lastMatchedCard = null;
+    for (var m = 0; m < cards.length; m++) {
+      cards[m].classList.remove('on','dim');
+      if (matchingVerts.indexOf(cards[m].dataset.id) >= 0) {
+        cards[m].classList.add('on');
+        lastMatchedCard = cards[m];
+      } else {
+        cards[m].classList.add('dim');
+      }
+    }
+
+    if (lastMatchedCard) {
+      var lastInRow = getEndOfRow(lastMatchedCard);
+      if (lastInRow.nextSibling !== info) {
+        grid.insertBefore(info, lastInRow.nextSibling);
+      }
+    } else {
+      grid.appendChild(info);
+    }
+
+    var labels = { tool: 'Hub ou outil', res: 'Ressource', pers: 'Segment', syn: 'Synergie Eddmon' };
+    var pillEl = document.querySelector('.eco-pill[data-kind="'+kind+'"][data-id="'+id+'"]');
+    var pillName = pillEl ? pillEl.textContent : '';
+    var vertNames = matchingVerts.map(function(vid){ return verts[vid].name; }).join(', ') || 'aucune verticale';
+    info.style.setProperty('--info-color', 'var(--border-secondary)');
+    info.innerHTML = '<span class="eco-info-name">' + labels[kind] + ' · ' + pillName + '</span><span class="eco-info-body">Mobilisé par : ' + vertNames + '.</span>';
+    info.classList.add('show');
+    info.scrollTop = 0;
+    resetBtn.classList.add('show');
+    activeId = kind + ':' + id;
+  }
+
+  function resetAll() {
+    var cards = document.querySelectorAll('.eco-card');
+    for (var i = 0; i < cards.length; i++) cards[i].classList.remove('on','dim');
+    var pills = document.querySelectorAll('.eco-pill');
+    for (var j = 0; j < pills.length; j++) {
+      pills[j].classList.remove('hot','dim');
+      pills[j].style.removeProperty('--hot-bg');
+      pills[j].style.removeProperty('--hot-text');
+      pills[j].style.removeProperty('--hot-border');
+    }
+    info.classList.remove('show');
+    grid.appendChild(info);
+    resetBtn.classList.remove('show');
+    activeId = null;
+  }
+
+  document.querySelectorAll('.eco-card').forEach(function(card) {
+    card.addEventListener('click', function() {
+      if (activeId === card.dataset.id) { resetAll(); return; }
+      paint(card.dataset.id);
+    });
+  });
+
+  document.querySelectorAll('.eco-pill').forEach(function(pill) {
+    pill.addEventListener('click', function() {
+      var key = pill.dataset.kind + ':' + pill.dataset.id;
+      if (activeId === key) { resetAll(); return; }
+      paintFromPill(pill.dataset.kind, pill.dataset.id);
+    });
+  });
+
+  resetBtn.addEventListener('click', resetAll);
+
+  window.addEventListener('resize', function() {
+    if (!activeId) return;
+    var activeCard = document.querySelector('.eco-card.on');
+    if (!activeCard) return;
+    var lastInRow = getEndOfRow(activeCard);
+    if (lastInRow.nextSibling !== info) {
+      grid.insertBefore(info, lastInRow.nextSibling);
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
